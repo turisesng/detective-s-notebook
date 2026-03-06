@@ -1,0 +1,9 @@
+# Query: useEnvFile
+# ContextLines: 1
+
+1 result - 1 file
+
+/defaultSettings.jsonc:
+  9764  	// Controls whether environment variables from .env files and python.envFile setting are injected into terminals.
+  9765: 	"python.terminal.useEnvFile": true,
+  9766  

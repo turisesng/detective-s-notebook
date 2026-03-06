@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=Special+Elite&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 7%;
+    --foreground: 40 20% 90%;
+
+    --card: 220 18% 10%;
+    --card-foreground: 40 20% 90%;
+
+    --popover: 220 18% 12%;
+    --popover-foreground: 40 20% 90%;
+
+    --primary: 38 90% 50%;
+    --primary-foreground: 220 20% 7%;
+
+    --secondary: 220 15% 16%;
+    --secondary-foreground: 40 15% 80%;
+
+    --muted: 220 15% 14%;
+    --muted-foreground: 220 10% 50%;
+
+    --accent: 0 65% 45%;
+    --accent-foreground: 40 20% 95%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 38 90% 50%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 220 18% 8%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 38 90% 50%;
+    --sidebar-primary-foreground: 220 20% 7%;
+    --sidebar-accent: 220 15% 14%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 38 90% 50%;
+
+    /* Custom tokens */
+    --evidence: 38 70% 40%;
+    --suspect: 0 50% 40%;
+    --success: 140 60% 40%;
+    --warning: 30 90% 50%;
+    --noir-glow: 38 90% 50%;
+    --noir-red: 0 65% 45%;
+    --noir-overlay: 220 20% 5% / 0.85;
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Source Sans 3', sans-serif;
+    --font-typewriter: 'Special Elite', cursive;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  /* Handles SQL line breaks for the Victim Dossier */
+  .profile-text-formatted {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    display: block;
+  }
+
+  /* FORCED LARGE EVIDENCE IMAGE */
+  /* Using !important to ensure Tailwind utility classes do not override these forensic dimensions */
+  .evidence-image-large {
+    width: 100% !important;
+    height: 400px !important; /* Significantly increased from 18rem */
+    min-height: 550px !important;
+    object-fit: cover !important; /* Ensures the full image is visible without cropping */
+    @apply rounded-lg border-b border-border transition-all duration-500 bg-black/20;
+    filter: grayscale(100%);
+  }
+
+  .evidence-image-large:hover {
+    @apply grayscale-0;
+    filter: brightness(1.1);
+  }
+
+  .noir-card {
+    @apply bg-card border border-border rounded-lg p-5 transition-all duration-300;
+    box-shadow: 0 4px 20px hsl(220 20% 5% / 0.5);
+  }
+
+  .noir-card:hover {
+    box-shadow: 0 8px 30px hsl(var(--noir-glow) / 0.15);
+    border-color: hsl(var(--primary) / 0.3);
+  }
+
+  .noir-glow {
+    box-shadow: 0 0 20px hsl(var(--noir-glow) / 0.2), 0 0 40px hsl(var(--noir-glow) / 0.1);
+  }
+
+  .noir-text-glow {
+    text-shadow: 0 0 20px hsl(var(--noir-glow) / 0.4);
+  }
+
+  .evidence-stamp {
+    font-family: var(--font-typewriter);
+    @apply uppercase tracking-wider text-sm;
+    color: hsl(var(--accent));
+  }
+
+  .typewriter {
+    font-family: var(--font-typewriter);
+  }
+
+  .noir-divider {
+    @apply border-t border-border;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent);
+    height: 1px;
+  }
+
+  .suspect-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider;
+    background: hsl(var(--accent) / 0.15);
+    color: hsl(var(--accent));
+    border: 1px solid hsl(var(--accent) / 0.3);
+  }
+
+  .evidence-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider;
+    background: hsl(var(--primary) / 0.15);
+    color: hsl(var(--primary));
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+
+  .noir-overlay {
+    background: hsl(var(--noir-overlay));
+    backdrop-filter: blur(8px);
+  }
+
+  .noir-gradient-bg {
+    background: radial-gradient(ellipse at top, hsl(220 18% 12%), hsl(220 20% 7%));
+  }
+
+  .section-header {
+    @apply relative pb-3 mb-6;
+  }
+
+  .section-header::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-0.5 w-16;
+    background: hsl(var(--primary));
+  }
+}
+
+@layer utilities {
+  .animate-noir-pulse {
+    animation: noir-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes noir-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .animate-stamp {
+    animation: stamp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes stamp {
+    0% { transform: scale(2) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+  }
+}
