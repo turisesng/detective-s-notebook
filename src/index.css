@@ -74,6 +74,20 @@
   }
 }
 
+@keyframes ekg {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+
+.animate-ekg {
+  animation: ekg linear infinite;
+}
+
+.bg-scanlines {
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5) 50%);
+  background-size: 100% 4px;
+}
 @layer components {
   /* Handles SQL line breaks for the Victim Dossier */
   .profile-text-formatted {

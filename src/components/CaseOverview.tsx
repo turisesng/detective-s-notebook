@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { FileText, MapPin, Calendar, Hash, UserCircle, Upload, Loader, Clock, AlertCircle, Search, User } from "lucide-react";
+import { FileText, MapPin, Calendar, Hash, UserCircle, Upload, Loader, Clock, AlertCircle, Search, User, Camera } from "lucide-react";
 // Ensure these paths use the correct relative or @/ alias we discussed
 import type { Case as RemoteCase, TimelineEvent } from "@/lib/caseService";
 import { updateVictimImage, fetchTimelineByCase } from "@/lib/caseService";
 import { uploadImage, validateImageFile } from "@/lib/imageService";
+import SceneCamera from "@/components/mystery/SceneCamera";
 
 const CaseTimeline = ({ events, loading }: { events: TimelineEvent[]; loading: boolean }) => {
   const iconMap: Record<string, React.ReactNode> = {
@@ -133,8 +134,9 @@ const CaseOverview = ({ remoteCase, onImageUpdate }: { remoteCase: RemoteCase | 
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
-        {/* LEFT COLUMN: VICTIM IMAGE (Placeholder fixed at min-h-550px) */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* LEFT COLUMN: VICTIM IMAGE & SCENE ANALYSIS */}
+        <div className="lg:col-span-5 space-y-10">
+          {/* Victim Profile Card */}
           <div className="noir-card p-3">
             <div className="relative w-full min-h-[550px] h-full rounded-lg overflow-hidden border-2 border-border bg-secondary/20 group noir-glow flex items-center justify-center">
               {remoteCase.victim_image ? (
@@ -167,6 +169,22 @@ const CaseOverview = ({ remoteCase, onImageUpdate }: { remoteCase: RemoteCase | 
               </p>
             </div>
           </div>
+
+          {/* 3D Scene Analysis Section */}
+          <div className="noir-card p-6 space-y-4">
+            <div className="flex items-center gap-3 mb-2">
+              <Camera className="w-5 h-5 text-primary" />
+              <h4 className="text-sm uppercase tracking-[0.3em] text-primary font-bold">Tactical Scene Analysis</h4>
+            </div>
+            <SceneCamera 
+              src={remoteCase.scene_image || ""} 
+              alt={remoteCase.scene_location || "Crime Scene"} 
+            />
+            <p className="text-xs text-muted-foreground italic font-body">
+              Note: Tilt view to inspect environmental variables and spatial discrepancies.
+            </p>
+          </div>
+
           {victimError && <p className="text-destructive text-sm font-bold bg-destructive/10 p-3 rounded-md">{victimError}</p>}
         </div>
 

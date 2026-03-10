@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,37 +5,18 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
-import { fetchCases, type Case as RemoteCase } from '@/lib/caseService';
+import type { Case as RemoteCase } from '@/lib/caseService';
 
 const CasesDropdown = ({
   onSelect,
   selectedId,
+  cases, // Accept cases as a prop
 }: {
   onSelect?: (c: RemoteCase | null) => void;
   selectedId?: string | null;
+  cases: RemoteCase[];
 }) => {
-  const [cases, setCases] = useState<RemoteCase[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    fetchCases()
-      .then((data) => {
-        if (!mounted) return;
-        setCases(data);
-        console.log(`✓ Loaded ${data.length} cases from Supabase:`, data.map((c) => ({ id: c.id, title: c.title })));
-      })
-      .catch((e: any) => {
-        console.error('Failed to load cases:', e);
-      })
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const label = cases.find((c) => c.id === selectedId)?.title ?? 'Load Case';
+  const label = cases.find((c) => c.id === selectedId)?.title ?? 'Select Case';
 
   return (
     <DropdownMenu>
@@ -47,8 +27,7 @@ const CasesDropdown = ({
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-64">
-        {loading && <DropdownMenuItem disabled>Loading...</DropdownMenuItem>}
+      <DropdownMenuContent className="w-64 max-h-96 overflow-y-auto">
         {cases.length === 0 && <DropdownMenuItem disabled>No cases found</DropdownMenuItem>}
         {cases.map((c) => (
           <DropdownMenuItem
